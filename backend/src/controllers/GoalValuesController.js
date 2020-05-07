@@ -24,6 +24,15 @@ module.exports = {
     const goal_id = request.headers.authorization;
     const saved = false;
 
+    //Check if exist the value for not duplicate value insert
+    const goal_values = await connection('goal_values')
+      .where({'goal_id': goal_id, 'week': week})
+      .count('* as count')
+
+    if(goal_values[0].count > 0){
+      return response.status(401).json({ erro: 'Operation not permitted' });
+    }
+
     await connection('goal_values').insert({ 
       goal_id,
       week,
@@ -31,7 +40,8 @@ module.exports = {
       saved
     });
 
-    return response.json({ id });
+    return response.json({ goal_id, week, value });
+
   },
 
   async delete(request, response) {
@@ -41,6 +51,7 @@ module.exports = {
     const goal_values = await connection('goal_values')
       .where('goal_id', goal_id)
       .select('goal_id')
+      .first()
 
     if(goal_values.goal_id !== goal_id){
       return response.status(401).json({ erro: 'Operation not permitted' });

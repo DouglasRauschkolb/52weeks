@@ -21,5 +21,29 @@ module.exports = {
     });
 
     return response.json({ id })
+  },
+
+  async delete(request, response) {
+
+    const id = request.headers.authorization;
+
+    console.log(id);
+
+    const goals = await connection('goals')
+      .where('id', id)
+      .select('id')
+      .first()
+
+    console.log(goals);
+
+    if(goals.id !== id){
+      return response.status(401).json({ erro: 'Operation not permitted' });
+    }
+
+    await connection('goals').where('id', id).delete();
+
+    return response.status(204).send();
+
   }
+
 }
