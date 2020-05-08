@@ -1,19 +1,11 @@
+import 'intl';
+import 'intl/locale-data/jsonp/pt-BR';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+
+import Routes from './src/routes';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Welcome to 52 Weeks app!!</Text>
-    </View>
+    <Routes />
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#00FF75;',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
